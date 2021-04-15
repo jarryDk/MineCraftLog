@@ -1,0 +1,29 @@
+= dk.jarry.minecraftlog - server
+
+Show the server log from a MineCraft server via https://kafka.apache.org/[Apache Kafka].
+
+== Build
+
+.Dev mode
+[source,bash]
+----
+./mvnw compile quarkus:dev
+----
+
+.Package
+[source,bash]
+----
+./mvnw clean package
+----
+
+== Run
+
+.Using default values
+[source,bash]
+----
+java -jar target/target/quarkus-app/quarkus-run.jar
+----
+
+== Web
+
+http://localhost:8080/minecraft_log.html

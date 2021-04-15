@@ -1,0 +1,44 @@
+= dk.jarry.minecraftlog
+
+The goal of this project is to see who is online on our MineCraft server!
+
+It can de done in many ways and not all requires https://kafka.apache.org[Apache Kafka] ;o)
+
+In this projet we will create a web front-end where we can see who is online.
+
+== Requirements
+
+- https://kafka.apache.org[Apache Kafka]
+
+https://kafka.apache.org/downloads[Download] Apache Kafka
+
+[source,bash]
+----
+tar -xzf kafka_2.13-2.7.0.tgz
+cd kafka_2.13-2.7.0
+----
+
+Start Zookeper
+[source,bash]
+----
+bin/zookeeper-server-start.sh config/zookeeper.properties
+----
+
+Start server
+[source,bash]
+----
+bin/kafka-server-start.sh config/server.properties
+----
+
+== dk.jarry.minecraftlog - collecting
+
+Collect log data from Minecraft and send it to https://kafka.apache.org/[Apache Kafka].
+
+link:minecraftlog-collecting/README.adoc[minecraftlog-collecting/README.adoc]
+
+== dk.jarry.minecraftlog - server
+
+Get Minecraft log data from https://kafka.apache.org/[Apache Kafka] and dispaly it.
+
+
+link:minecraftlog-server/README.adoc[minecraftlog-server/README.adoc]

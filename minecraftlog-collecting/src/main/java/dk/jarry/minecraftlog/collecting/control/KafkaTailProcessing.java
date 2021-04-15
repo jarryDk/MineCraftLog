@@ -19,7 +19,7 @@ public class KafkaTailProcessing implements TailProcessing {
 
 	private final static Logger logger = Logger.getLogger(KafkaTailProcessing.class.getCanonicalName());
 
-	public static final String TOPIC_NAME = "minecraft";
+	public String topicName = "minecraft";
 
 	private final KafkaProducer<String, MineCraft> producer;
 	private final Boolean isAsync;
@@ -59,12 +59,12 @@ public class KafkaTailProcessing implements TailProcessing {
 		long startTime = System.currentTimeMillis();
 		if (isAsync) { // Send asynchronously
 			producer.send( //
-					new ProducerRecord<String, MineCraft>(TOPIC_NAME, key, mineCraft),
+					new ProducerRecord<String, MineCraft>(topicName, key, mineCraft),
 					(Callback) new MineCraftCallBack(startTime, key, mineCraft));
 		} else { // Send synchronously
 			try {
 				RecordMetadata recordMetadata = producer.send( //
-						new ProducerRecord<String, MineCraft>(TOPIC_NAME, key, mineCraft) //
+						new ProducerRecord<String, MineCraft>(topicName, key, mineCraft) //
 				).get();
 				logger.info("message(" + key + ", " + mineCraft + ") sent to partition(" + recordMetadata.partition()
 						+ "), " + "offset(" + recordMetadata.offset() + ") - synchronously");

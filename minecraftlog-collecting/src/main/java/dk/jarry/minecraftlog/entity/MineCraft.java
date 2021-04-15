@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MineCraft {
 
 	private final static String TIME_REG = "\\[[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\]";
-	private final static String THREAD_REG = "\s\\[.+\\]:";
+	private final static String THREAD_REG = "\\s\\[.+\\]:";
 	private final static String MESSAGE_REG = "\\]:.*";
 
 	private final static Pattern TIME_PATTERN = Pattern.compile(TIME_REG);

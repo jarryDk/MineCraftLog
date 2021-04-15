@@ -1,4 +1,40 @@
-= Logtail
+= dk.jarry.minecraftlog - collecting
+
+We collect the server log from a MineCraft server and send it to https://kafka.apache.org/[Apache Kafka].
+
+== Config
+
+filePath : MineCraft server log folder - default `/opt/minecraft/server/1.16.5/logs`
+
+fileName : Name of the file to collect from - default `latest.log`
+
+topicName : The topic on Kafka data is send to - default `minecraft`
+
+== Build
+
+[source,bash]
+----
+mvn clean package
+----
+
+== Run
+
+.Using default values
+[source,bash]
+----
+java -jar target/minecraftlog-collecting.jar
+----
+
+.Config values
+[source,bash]
+----
+export filePath=/opt/minecraft/server/1.16.5/logs
+export fileName=latest.log
+export topicName=minecraft
+java -jar target/minecraftlog-collecting.jar
+----
+
+== Inspiration
 
 JAVA monitor and get the log files that have changed (new) - Programmer Sought
 
