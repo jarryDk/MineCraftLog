@@ -1,0 +1,25 @@
+= Logtail
+
+JAVA monitor and get the log files that have changed (new) - Programmer Sought
+
+https://www.programmersought.com/article/71353196470/
+
+java logging listener, monitor log files dynamically increasing content - Programmer Sought
+
+https://www.programmersought.com/article/30892221863/
+
+performance - Reading large log files in real time in Java - Stack Overflow
+
+https://stackoverflow.com/questions/58850531/reading-large-log-files-in-real-time-in-java
+
+file - Java IO implementation of unix/linux "tail -f" - Stack Overflow
+
+https://stackoverflow.com/questions/557844/java-io-implementation-of-unix-linux-tail-f?noredirect=1&lq=1
+
+JLogTailer - A Java log tailer with regular expression features
+
+http://www.jibble.org/jlogtailer.php
+https://github.com/alexramos1/jlogtailer
+
+
+https://github.com/karande/kafka-producer-file
