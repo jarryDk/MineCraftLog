@@ -24,7 +24,7 @@ public class MineCraftResource {
     @GET
     @Path("/stream")
     @Produces(MediaType.SERVER_SENT_EVENTS) 
-    @SseElementType("text/plain") 
+    @SseElementType(MediaType.APPLICATION_JSON) 
     public Publisher<MineCraft> stream() { 
         return mineCraft;
     }
