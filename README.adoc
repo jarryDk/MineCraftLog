@@ -38,7 +38,7 @@ link:minecraftlog-collecting/README.adoc[minecraftlog-collecting/README.adoc]
 
 == dk.jarry.minecraftlog - server
 
-Get Minecraft log data from https://kafka.apache.org/[Apache Kafka] and dispaly it.
+Get Minecraft log data from https://kafka.apache.org/[Apache Kafka] and display it.
 
 
 link:minecraftlog-server/README.adoc[minecraftlog-server/README.adoc]
