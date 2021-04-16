@@ -17,7 +17,7 @@ public class Main {
 	private static String fileName = "latest.log";
 
 	// The topic on Kafka data is send to
-	public static String topicName = "minecraft";
+	public static String topicName = "mineCraftLog";
 	
 	public static void main(String[] args) {
 				

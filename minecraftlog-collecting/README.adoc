@@ -8,7 +8,7 @@ filePath : MineCraft server log folder - default `/opt/minecraft/server/1.16.5/l
 
 fileName : Name of the file to collect from - default `latest.log`
 
-topicName : The topic on Kafka data is send to - default `minecraft`
+topicName : The topic on Kafka data is send to - default `minecraft-log`
 
 == Build
 

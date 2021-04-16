@@ -24,3 +24,5 @@ hs_err_pid*
 .classpath
 .project
 .settings
+kafka/kafka-logs
+kafka/zookeeper-log

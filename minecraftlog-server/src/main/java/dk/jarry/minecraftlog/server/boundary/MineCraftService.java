@@ -1,25 +1,47 @@
 package dk.jarry.minecraftlog.server.boundary;
 
-import io.smallrye.reactive.messaging.annotations.Broadcast;
-
-import org.eclipse.microprofile.reactive.messaging.Outgoing;
-
-import dk.jarry.minecraftlog.MineCraft;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.eclipse.microprofile.opentracing.Traced;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
-import javax.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
+import dk.jarry.minecraftlog.entity.MineCraftLog;
+import dk.jarry.minecraftlog.entity.MineCraftUserLoginStatus;
+import io.smallrye.reactive.messaging.annotations.Broadcast;
 
 @Traced
 @ApplicationScoped
 public class MineCraftService {
     
-    @Incoming("minecraft-in")
-    @Outgoing("minecraft-stream")                             
+    @Incoming("minecraftlog-in")
+    @Outgoing("minecraft-log-stream")                             
     @Broadcast
-    public MineCraft process(MineCraft mineCraft){
-        System.out.println(mineCraft);
-        return mineCraft;
+    public MineCraftLog processLog(MineCraftLog mineCraftLog){    	
+    	System.out.println(mineCraftLog);    	
+    	if(mineCraftLog.message.contains(" joined the game") ||
+    			mineCraftLog.message.contains(" left the game")) {
+    		processUserLoginStatus(mineCraftLog);
+    	}    	        
+        return mineCraftLog;
     }
-
+    
+    @Inject 
+    @Channel("minecraft-user-login-status-out") 
+    Emitter<MineCraftUserLoginStatus> mineCraftUserLoginStatusEmitter;
+      
+    public void processUserLoginStatus(MineCraftLog mineCraftLog){
+    	
+    	System.out.println("MineCraftUserLoginStatus - - based on " + mineCraftLog);
+    	
+    	MineCraftUserLoginStatus mineCraftUserLoginStatus = new MineCraftUserLoginStatus(mineCraftLog);
+    	if(mineCraftUserLoginStatus.name != null) {
+    		mineCraftUserLoginStatusEmitter.send(mineCraftUserLoginStatus);
+    	}
+    	    	
+    }
+       
 }

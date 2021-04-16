@@ -13,26 +13,27 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import dk.jarry.minecraftlog.entity.MineCraft;
+import dk.jarry.minecraftlog.entity.MineCraftLog;
 
 public class KafkaTailProcessing implements TailProcessing {
 
 	private final static Logger logger = Logger.getLogger(KafkaTailProcessing.class.getCanonicalName());
 
-	public String topicName = "minecraft";
+	private String topicName;
 
-	private final KafkaProducer<String, MineCraft> producer;
+	private final KafkaProducer<String, MineCraftLog> producer;
 	private final Boolean isAsync;
 
-	public KafkaTailProcessing(String topic, Boolean isAsync) {
+	public KafkaTailProcessing(String topicName, Boolean isAsync) {
 
+		this.topicName = topicName;
 		this.isAsync = isAsync;
 
 		Properties props = new Properties();
 		props.put("bootstrap.servers", "localhost:9092");
 		props.put("client.id", "KafkaFileProducer");
 
-		producer = new KafkaProducer<String, MineCraft>(props, //
+		producer = new KafkaProducer<String, MineCraftLog>(props, //
 				new StringSerializer(), //
 				new JsonPOJOSerializer<>());
 
@@ -52,21 +53,21 @@ public class KafkaTailProcessing implements TailProcessing {
 
 		logger.fine("Log line (hasNewLine:" + hasNewLine + ") : " + line);
 
-		sendMessage(UUID.randomUUID().toString(), new MineCraft(line));
+		sendMessage(UUID.randomUUID().toString(), new MineCraftLog(line));
 	}
 
-	private void sendMessage(String key, MineCraft mineCraft) {
+	private void sendMessage(String key, MineCraftLog mineCraftLog) {
 		long startTime = System.currentTimeMillis();
 		if (isAsync) { // Send asynchronously
 			producer.send( //
-					new ProducerRecord<String, MineCraft>(topicName, key, mineCraft),
-					(Callback) new MineCraftCallBack(startTime, key, mineCraft));
+					new ProducerRecord<String, MineCraftLog>(topicName, key, mineCraftLog),
+					(Callback) new MineCraftCallBack(startTime, key, mineCraftLog));
 		} else { // Send synchronously
 			try {
 				RecordMetadata recordMetadata = producer.send( //
-						new ProducerRecord<String, MineCraft>(topicName, key, mineCraft) //
+						new ProducerRecord<String, MineCraftLog>(topicName, key, mineCraftLog) //
 				).get();
-				logger.info("message(" + key + ", " + mineCraft + ") sent to partition(" + recordMetadata.partition()
+				logger.info("message(" + key + ", " + mineCraftLog + ") sent to partition(" + recordMetadata.partition()
 						+ "), " + "offset(" + recordMetadata.offset() + ") - synchronously");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -84,12 +85,12 @@ class MineCraftCallBack implements Callback {
 
 	private long startTime;
 	private String key;
-	private MineCraft mineCraft;
+	private MineCraftLog mineCraftLog;
 
-	public MineCraftCallBack(long startTime, String key, MineCraft mineCraft) {
+	public MineCraftCallBack(long startTime, String key, MineCraftLog mineCraftLog) {
 		this.startTime = startTime;
 		this.key = key;
-		this.mineCraft = mineCraft;
+		this.mineCraftLog = mineCraftLog;
 	}
 
 	/**
@@ -105,7 +106,7 @@ class MineCraftCallBack implements Callback {
 	public void onCompletion(RecordMetadata metadata, Exception exception) {
 		long elapsedTime = System.currentTimeMillis() - startTime;
 		if (metadata != null) {
-			logger.info("message(" + key + ", " + mineCraft + ") sent to partition(" + metadata.partition() + "), "
+			logger.info("message(" + key + ", " + mineCraftLog + ") sent to partition(" + metadata.partition() + "), "
 					+ "offset(" + metadata.offset() + ") in " + elapsedTime + " ms - asynchronously");
 		} else {
 			exception.printStackTrace();

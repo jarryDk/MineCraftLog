@@ -11,22 +11,22 @@ import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.jboss.resteasy.annotations.SseElementType;
 import org.reactivestreams.Publisher;
 
-import dk.jarry.minecraftlog.MineCraft;
+import dk.jarry.minecraftlog.entity.MineCraftLog;
 
 @Traced
 @Path("/logs")
 public class MineCraftResource {
 
     @Inject
-    @Channel("minecraft-stream") 
-    Publisher<MineCraft> mineCraft; 
+    @Channel("minecraft-log-stream") 
+    Publisher<MineCraftLog> mineCraftLog; 
 
     @GET
     @Path("/stream")
     @Produces(MediaType.SERVER_SENT_EVENTS) 
     @SseElementType(MediaType.APPLICATION_JSON) 
-    public Publisher<MineCraft> stream() { 
-        return mineCraft;
+    public Publisher<MineCraftLog> stream() { 
+        return mineCraftLog;
     }
 
 }

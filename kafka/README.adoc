@@ -1,0 +1,41 @@
+= Kafka for dk.jarry.minecraftlog  
+
+.Change to zookeeper.properties
+----
+dataDir=zookeeper-log
+----
+
+.Change to server.properties
+----
+log.dirs=kafka-logs
+----
+
+.Start Zookeper
+[source,bash]
+----
+export KAFKA_HOME="/opt/apache/kafka/kafka_2.13-2.7.0"
+
+$KAFKA_HOME/bin/zookeeper-server-start.sh zookeeper.properties
+----
+
+.Start server
+[source,bash]
+----
+export KAFKA_HOME="/opt/apache/kafka/kafka_2.13-2.7.0"
+
+$KAFKA_HOME/bin/kafka-server-start.sh config/server.properties
+----
+
+== Create topics
+
+.Create topic mineCraftLog
+[source,bash]
+----
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic mineCraftLog
+----
+
+.Create topic mineCraftUserLoginStatus
+[source,bash]
+----
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic mineCraftUserLoginStatus
+----
